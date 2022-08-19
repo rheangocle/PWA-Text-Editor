@@ -7,17 +7,6 @@ const { precacheAndRoute } = require('workbox-precaching/precacheAndRoute');
 
 precacheAndRoute(self.__WB_MANIFEST);
 
-const matchCallback = ({ request }) => {
-  console.log(request);
-  return (
-    // CSS
-    request.mode === 'navigate'
-    // ||
-    // JavaScript
-    // request.destination === 'script'
-  );
-};
-
 const pageCache = new CacheFirst({
   cacheName: 'page-cache',
   plugins: [
@@ -39,9 +28,9 @@ registerRoute(({ request }) => request.mode === 'navigate', pageCache);
 
 // TODO: Implement asset caching
 registerRoute(
-  matchCallback,
+  ({ request }) => ["style", "script", "worker"].includes(request.destination),
   new StaleWhileRevalidate({
-    cacheName: 'page-cache',
+    cacheName: "asset-cache",
     plugins: [
       new CacheableResponsePlugin({
         statuses: [0, 200],
