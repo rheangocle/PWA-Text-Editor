@@ -30,6 +30,7 @@ module.exports = () => {
       }),
       new WebpackPwaManifest({
         // TODO: Create a manifest.json:
+        fingerprints: false,
         inject: true,
         name: 'Just another text editor',
         short_name: 'JATE',
